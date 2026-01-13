@@ -1,0 +1,51 @@
+Dedoctive Developer Edition License
+Version 1.0
+Last Updated: 28-Nov-25
+
+1. Grant of License
+The Licensor grants you (“Licensee”) a limited, revocable, non-exclusive, non-transferable, non-sublicensable license to download and use the Dedoctive Developer Edition Docker image (“Software”) for non-commercial, individual developer, research, education, and personal experimentation purposes only. All rights not expressly granted are reserved by the Licensor.
+
+2. Non-Commercial Use Only
+You may not use the Software:
+a. for any commercial advantage or monetary compensation
+b. in support of a commercial service, product, workflow, or offering
+c. on behalf of any organisation, whether public, private, or governmental
+d. as part of any paid consultancy, contracting, or research project
+e. in any production environment
+f. in any operational, safety-critical, or mission-critical context
+
+Commercial or organisational use requires a separate commercial license from the Licensor.
+
+3. Individual Developer Use Only
+This license is granted solely to one natural person. You may not:
+a. share, lend, or redistribute the Software
+b. provide access to the Software to any other individual
+c. use it collaboratively within a team, company, consortium, or institution
+
+Each individual wishing to use the Software must obtain their own license.
+
+4. Restrictions
+You may not:
+a. modify, disassemble, reverse engineer, decompile, or attempt to extract the Software’s source code
+b. circumvent any technical restrictions, licence controls, or security mechanisms
+c. remove or obscure any notices, marks, or attribution contained within the Software
+d. use the Software to build, train, or evaluate competitive reasoning engines, models, or platforms
+e. use the Software for harmful, unethical, or illegal activities
+
+5. Ownership
+The Software is licensed, not sold. All intellectual property rights in and to the Software remain exclusively with the Licensor.
+
+6. No Warranty
+The Software is provided “as is” without warranty of any kind. The Licensor makes no guarantees regarding correctness, performance, security, reliability, or fitness for any purpose.
+
+7. Limitation of Liability
+To the maximum extent permitted by law, the Licensor is not liable for any damages arising out of or relating to the Software or this Agreement, including but not limited to data loss, business interruption, security breaches, or consequential damages.
+
+8. Termination
+This license terminates automatically if you breach any term of this Agreement. Upon termination, you must immediately cease all use of the Software and delete all copies, including Docker images, layers, and derived works. The Licensor may revoke this license at any time.
+
+9. Updates and Changes
+The Licensor may update, modify, or discontinue the Software or this Agreement at any time. Continued use after such changes constitutes acceptance of the updated terms.
+
+10. Governing Law
+This Agreement is governed by the laws of the UK.

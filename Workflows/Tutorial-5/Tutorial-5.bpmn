@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:spiffworkflow="http://spiffworkflow.org/bpmn/schema/1.0/core" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:extensionElements>
+    <open-bpmn:auto-align>true</open-bpmn:auto-align>
+  </bpmn:extensionElements>
+  <bpmn:collaboration id="Tutorial-5">
+    <bpmn:participant id="subActivity" name="subActivity" processRef="subWorkflow" />
+    <bpmn:participant id="Main" name="Main" processRef="__main__" />
+  </bpmn:collaboration>
+  <bpmn:process id="subWorkflow" name="subWorkflow" processType="Public" isExecutable="true">
+    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:extensionElements>
+      <spiffworkflow:properties>
+      </spiffworkflow:properties>
+    </bpmn:extensionElements>
+    <bpmn:endEvent id="EndSubWorkflow" name="EndSubWorkflow">
+      <bpmn:incoming>Flow_0wvm3st</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0wvm3st" sourceRef="Activity_1xx6qmy" targetRef="EndSubWorkflow" />
+    <bpmn:sequenceFlow id="Flow_1pv5c94" sourceRef="StartSubWorkflow" targetRef="Activity_1xx6qmy" />
+    <bpmn:startEvent id="StartSubWorkflow" name="StartSubWorkflow">
+      <bpmn:outgoing>Flow_1pv5c94</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:scriptTask id="Activity_1xx6qmy" name="UserScript">
+      <bpmn:incoming>Flow_1pv5c94</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wvm3st</bpmn:outgoing>
+      <bpmn:script>answer ="Your answer was: " + formData.get('query')</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmn:process id="__main__" name="__main__">
+    <bpmn:startEvent id="StartMain" name="StartMain">
+      <bpmn:outgoing>Flow_15k6erz</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_15k6erz" sourceRef="StartMain" targetRef="UserForm" />
+    <bpmn:sequenceFlow id="Flow_16gbm67" sourceRef="CallSubWorkflow" targetRef="EndMain" />
+    <bpmn:sequenceFlow id="Flow_0e67u93" sourceRef="UserForm" targetRef="CallSubWorkflow" />
+    <bpmn:userTask id="UserForm" name="UserForm">
+      <bpmn:extensionElements>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;query&#34;: {&#10;        &#34;title&#34;: &#34;Query&#34;,&#10;        &#34;type&#34;: &#34;string&#34;,&#10;        &#34;description&#34;: &#34;Enter a query that you want the LLM to answer using its tools&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;query&#34;&#10;    ]&#10;  }&#10;}" />
+        </spiffworkflow:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_15k6erz</bpmn:incoming>
+      <bpmn:outgoing>Flow_0e67u93</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndMain" name="EndMain">
+      <bpmn:incoming>Flow_16gbm67</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:callActivity id="CallSubWorkflow" name="CallSubWorkflow" calledElement="subWorkflow">
+      <bpmn:extensionElements>
+        <spiffworkflow:serviceTaskOperator id="adk/WorkflowAgent">
+          <spiffworkflow:parameters>
+            <spiffworkflow:parameter id="workflow" type="string" value="#subWorkflow" />
+            <spiffworkflow:parameter id="workflowMode" type="string" />
+            <spiffworkflow:parameter id="workflowParams" type="string" />
+          </spiffworkflow:parameters>
+        </spiffworkflow:serviceTaskOperator>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0e67u93</bpmn:incoming>
+      <bpmn:outgoing>Flow_16gbm67</bpmn:outgoing>
+    </bpmn:callActivity>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Tutorial-5">
+      <bpmndi:BPMNShape id="Participant_08y3087_di" bpmnElement="subActivity" isHorizontal="true">
+        <dc:Bounds x="190" y="240" width="680" height="160" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndSubWorkflow">
+        <dc:Bounds x="782" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="760" y="325" width="88" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0bboaaa_di" bpmnElement="StartSubWorkflow">
+        <dc:Bounds x="252" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="234" y="325" width="83" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bago76_di" bpmnElement="Activity_1xx6qmy">
+        <dc:Bounds x="460" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0wvm3st_di" bpmnElement="Flow_0wvm3st">
+        <di:waypoint x="560" y="300" />
+        <di:waypoint x="782" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1pv5c94_di" bpmnElement="Flow_1pv5c94">
+        <di:waypoint x="288" y="300" />
+        <di:waypoint x="460" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_1pkignq_di" bpmnElement="Main" isHorizontal="true">
+        <dc:Bounds x="190" y="30" width="680" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0cadgaf_di" bpmnElement="StartMain">
+        <dc:Bounds x="252" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="246" y="165" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17b4uey_di" bpmnElement="UserForm">
+        <dc:Bounds x="350" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0nmrmhi_di" bpmnElement="EndMain">
+        <dc:Bounds x="782" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="779" y="165" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jxlysi_di" bpmnElement="CallSubWorkflow">
+        <dc:Bounds x="580" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_15k6erz_di" bpmnElement="Flow_15k6erz">
+        <di:waypoint x="288" y="140" />
+        <di:waypoint x="350" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16gbm67_di" bpmnElement="Flow_16gbm67">
+        <di:waypoint x="680" y="140" />
+        <di:waypoint x="782" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e67u93_di" bpmnElement="Flow_0e67u93">
+        <di:waypoint x="450" y="140" />
+        <di:waypoint x="580" y="140" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

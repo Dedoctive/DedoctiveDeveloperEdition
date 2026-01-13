@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:spiffworkflow="http://spiffworkflow.org/bpmn/schema/1.0/core" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:extensionElements>
+    <open-bpmn:auto-align>true</open-bpmn:auto-align>
+  </bpmn:extensionElements>
+  <bpmn:process id="Tutorial-4" name="Tutorial-4" processType="Public" isExecutable="true">
+    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:extensionElements>
+      <spiffworkflow:properties>
+        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
+      </spiffworkflow:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent" name="StartEvent">
+      <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="EndEvent" name="EndEvent">
+      <bpmn:incoming>Flow_1tnes4t</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1gz6erh" sourceRef="StartEvent" targetRef="MCPTool" />
+    <bpmn:sequenceFlow id="Flow_1wt4v9q" sourceRef="MCPTool" targetRef="CounterScript" />
+    <bpmn:serviceTask id="MCPTool" name="MCPTool">
+      <bpmn:extensionElements>
+        <spiffworkflow:instructionsForEndUser>You are a helpful assistant that can answer any questions</spiffworkflow:instructionsForEndUser>
+        <spiffworkflow:serviceTaskOperator id="mcp/MCPTool" resultVariable="mcpToolResult" />
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="mcpToolConfiguration" value="{&#10;  &#34;toolName&#34;: &#34;deepwiki_read_wiki_contents&#34;,&#10;  &#34;toolArgs&#34;: {&#10;    &#34;repoName&#34;: &#34;scipy/scipy&#34;&#10;  }&#10;}" />
+        </spiffworkflow:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gz6erh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wt4v9q</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1tnes4t" sourceRef="CounterScript" targetRef="EndEvent" />
+    <bpmn:scriptTask id="CounterScript" name="CounterScript">
+      <bpmn:incoming>Flow_1wt4v9q</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tnes4t</bpmn:outgoing>
+      <bpmn:script>response = "There are " + str(len(mcpToolResult)) +" document topics in scipy/scipy"</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Tutorial-4">
+      <bpmndi:BPMNShape id="Event_0bboaaa_di" bpmnElement="StartEvent">
+        <dc:Bounds x="202" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="197" y="245" width="53" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndEvent">
+        <dc:Bounds x="772" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="767" y="245" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0enmq6y_di" bpmnElement="MCPTool">
+        <dc:Bounds x="370" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1w8ezt8_di" bpmnElement="CounterScript">
+        <dc:Bounds x="560" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1gz6erh_di" bpmnElement="Flow_1gz6erh">
+        <di:waypoint x="238" y="220" />
+        <di:waypoint x="370" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wt4v9q_di" bpmnElement="Flow_1wt4v9q">
+        <di:waypoint x="470" y="220" />
+        <di:waypoint x="560" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tnes4t_di" bpmnElement="Flow_1tnes4t">
+        <di:waypoint x="660" y="220" />
+        <di:waypoint x="772" y="220" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

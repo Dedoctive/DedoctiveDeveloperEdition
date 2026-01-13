@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:spiffworkflow="http://spiffworkflow.org/bpmn/schema/1.0/core" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:extensionElements>
+    <open-bpmn:auto-align>true</open-bpmn:auto-align>
+  </bpmn:extensionElements>
+  <bpmn:process id="Tutorial-3" name="Tutorial-3" processType="Public" isExecutable="true">
+    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:extensionElements>
+      <spiffworkflow:properties>
+        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
+      </spiffworkflow:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent" name="StartEvent">
+      <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="EndEvent" name="EndEvent">
+      <bpmn:incoming>Flow_0vb9ghy</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1gz6erh" sourceRef="StartEvent" targetRef="UserForm" />
+    <bpmn:userTask id="UserForm" name="User Form">
+      <bpmn:extensionElements>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;query&#34;: {&#10;        &#34;title&#34;: &#34;Query&#34;,&#10;        &#34;type&#34;: &#34;string&#34;,&#10;        &#34;description&#34;: &#34;Enter a query that you want the LLM to answer using its tools&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;query&#34;&#10;    ]&#10;  }&#10;}" />
+        </spiffworkflow:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gz6erh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0atro8q</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0vb9ghy" sourceRef="LLMAgent" targetRef="EndEvent" />
+    <bpmn:serviceTask id="LLMAgent" name="LLM Agent">
+      <bpmn:extensionElements>
+        <spiffworkflow:serviceTaskOperator id="adk/LLMAgent" resultVariable="llmResponse">
+          <spiffworkflow:parameters />
+        </spiffworkflow:serviceTaskOperator>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;gemini/gemini-2.0-flash&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions using the provided tools&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;deepwiki_read_wiki_structure&#34;,&#10;    &#34;deepwiki_read_wiki_contents&#34;,&#10;    &#34;deepwiki_ask_question&#34;&#10;  ]&#10;}" />
+        </spiffworkflow:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0atro8q</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vb9ghy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0atro8q" sourceRef="UserForm" targetRef="LLMAgent" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Tutorial-3">
+      <bpmndi:BPMNShape id="Event_0bboaaa_di" bpmnElement="StartEvent">
+        <dc:Bounds x="242" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="236" y="245" width="53" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndEvent">
+        <dc:Bounds x="842" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="837" y="245" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17b4uey_di" bpmnElement="UserForm">
+        <dc:Bounds x="390" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1v7yhhi_di" bpmnElement="LLMAgent">
+        <dc:Bounds x="610" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1gz6erh_di" bpmnElement="Flow_1gz6erh">
+        <di:waypoint x="278" y="220" />
+        <di:waypoint x="390" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vb9ghy_di" bpmnElement="Flow_0vb9ghy">
+        <di:waypoint x="710" y="220" />
+        <di:waypoint x="842" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0atro8q_di" bpmnElement="Flow_0atro8q">
+        <di:waypoint x="490" y="220" />
+        <di:waypoint x="610" y="220" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

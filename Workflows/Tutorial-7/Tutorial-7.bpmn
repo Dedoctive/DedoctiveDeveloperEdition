@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:spiffworkflow="http://spiffworkflow.org/bpmn/schema/1.0/core" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:extensionElements>
+    <open-bpmn:auto-align>true</open-bpmn:auto-align>
+  </bpmn:extensionElements>
+  <bpmn:process id="Tutorial-7" name="Tutorial-7" processType="Public" isExecutable="true">
+    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:extensionElements>
+      <spiffworkflow:properties>
+        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
+      </spiffworkflow:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent" name="StartEvent">
+      <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="EndEvent" name="EndEvent">
+      <bpmn:incoming>Flow_0zb3g66</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1gz6erh" sourceRef="StartEvent" targetRef="LLMAgent" />
+    <bpmn:sequenceFlow id="Flow_0zb3g66" sourceRef="LLMAgent" targetRef="EndEvent" />
+    <bpmn:serviceTask id="LLMAgent" name="LLMAgent">
+      <bpmn:extensionElements>
+        <spiffworkflow:serviceTaskOperator id="adk/LLMAgent" resultVariable="llmResponse">
+          <spiffworkflow:parameters />
+        </spiffworkflow:serviceTaskOperator>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions.\nPrepare a JSONSchema form to ask the user a question.\nSubmit this JSONSchema form to the userTool tool.\nThe user will respond with a question.\nYou should then answer this question using other tools or the knowledge that you have been trained on.\nThen prepare another JSONSchema form to the userTool to ask a followup question.\nWhenever a user responds with Quit, the  exit.\n&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;userTool&#34;,&#10;    &#34;deepwiki_read_wiki_structure&#34;,&#10;    &#34;deepwiki_read_wiki_contents&#34;,&#10;    &#34;deepwiki_ask_question&#34;&#10;  ]&#10;}" />
+        </spiffworkflow:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gz6erh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zb3g66</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Tutorial-7">
+      <bpmndi:BPMNShape id="Event_0bboaaa_di" bpmnElement="StartEvent">
+        <dc:Bounds x="422" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="415" y="245" width="53" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndEvent">
+        <dc:Bounds x="732" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="727" y="245" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cakts7_di" bpmnElement="LLMAgent">
+        <dc:Bounds x="550" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1gz6erh_di" bpmnElement="Flow_1gz6erh">
+        <di:waypoint x="458" y="220" />
+        <di:waypoint x="550" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zb3g66_di" bpmnElement="Flow_0zb3g66">
+        <di:waypoint x="650" y="220" />
+        <di:waypoint x="732" y="220" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
