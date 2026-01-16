@@ -14,48 +14,48 @@
       <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="EndEvent" name="EndEvent">
-      <bpmn:incoming>Flow_1wtjxrv</bpmn:incoming>
+      <bpmn:incoming>Flow_0zb3g66</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1gz6erh" sourceRef="StartEvent" targetRef="LLMAgent" />
-    <bpmn:sequenceFlow id="Flow_1wtjxrv" sourceRef="LLMAgent" targetRef="EndEvent" />
+    <bpmn:sequenceFlow id="Flow_0zb3g66" sourceRef="LLMAgent" targetRef="EndEvent" />
     <bpmn:serviceTask id="LLMAgent" name="LLMAgent">
       <bpmn:extensionElements>
-        <spiffworkflow:serviceTaskOperator id="adk/LLMAgent">
+        <spiffworkflow:serviceTaskOperator id="adk/LLMAgent" resultVariable="llmResponse">
           <spiffworkflow:parameters />
         </spiffworkflow:serviceTaskOperator>
         <spiffworkflow:properties>
-          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions.\nPrepare a JSONSchema form to ask the user a question.\nSubmit this JSONSchema form to the userTool tool.\nThe user will respond with a question or a request to run a workflow.\nYou should then answer this question using other tools or the knowledge that you have been trained on.\nIf the user request yoyu run a workflow then use workflowTool.\nThen prepare another JSONSchema form to the userTool to ask a followup question.\nWhenever a user responds with Quit, the  exit.&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;userTool&#34;,&#10;    &#34;workflowTool&#34;&#10;  ]&#10;}" />
+          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions.\nPrepare a JSONSchema form to ask the user a question and call the userTool tool with this as the form parameter.\nThe user will respond with a question which you should then answer using other tools or the knowledge that you have been trained on.\nThen call userTool again with another JSONSchema form to ask the user a followup question which must include your response to the previous question in the description property.\nIf the user requests to run a workflow, use the workflowTool.\nOnly exit when a user responds with Quit, otherwise call the userTool tool again, with the previous response included, to get a new question from the user.&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;userTool&#34;,&#10;    &#34;workflowTool&#34;&#10;  ]&#10;}" />
         </spiffworkflow:properties>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1gz6erh</bpmn:incoming>
-      <bpmn:outgoing>Flow_1wtjxrv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0zb3g66</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Tutorial-7.1">
       <bpmndi:BPMNShape id="Event_0bboaaa_di" bpmnElement="StartEvent">
-        <dc:Bounds x="352" y="202" width="36" height="36" />
+        <dc:Bounds x="422" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="345" y="245" width="53" height="14" />
+          <dc:Bounds x="415" y="245" width="53" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndEvent">
-        <dc:Bounds x="752" y="202" width="36" height="36" />
+        <dc:Bounds x="732" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="747" y="245" width="49" height="14" />
+          <dc:Bounds x="727" y="245" width="49" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_139bmoq_di" bpmnElement="LLMAgent">
-        <dc:Bounds x="520" y="180" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_0cakts7_di" bpmnElement="LLMAgent">
+        <dc:Bounds x="550" y="180" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1gz6erh_di" bpmnElement="Flow_1gz6erh">
-        <di:waypoint x="388" y="220" />
-        <di:waypoint x="520" y="220" />
+        <di:waypoint x="458" y="220" />
+        <di:waypoint x="550" y="220" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1wtjxrv_di" bpmnElement="Flow_1wtjxrv">
-        <di:waypoint x="620" y="220" />
-        <di:waypoint x="752" y="220" />
+      <bpmndi:BPMNEdge id="Flow_0zb3g66_di" bpmnElement="Flow_0zb3g66">
+        <di:waypoint x="650" y="220" />
+        <di:waypoint x="732" y="220" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

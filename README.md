@@ -8,7 +8,7 @@ The application is targeted for standalone use by developers so that they can be
 
 ## Setup Steps:
 - Create a file named `.env`, filling in the details as specified in .env.template
-- To get the docker image, from a terminal execute: `docker image pull dedoctive/dedoctive-developer-edition:latest`
+- To get the docker image, from a terminal execute: `docker pull dedoctive/dedoctive-developer-edition:latest`
 - To run the image execute: `./runDev.ps1`
     - This script just validates your inputs in the .env file and sets up the docker image
 

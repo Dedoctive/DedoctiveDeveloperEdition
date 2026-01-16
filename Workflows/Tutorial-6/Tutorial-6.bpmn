@@ -31,7 +31,7 @@
           <spiffworkflow:parameters />
         </spiffworkflow:serviceTaskOperator>
         <spiffworkflow:properties>
-          <spiffworkflow:property name="workflowAgentParams" value="{&#10;  &#34;workflowValue&#34;: &#34;..\\Tutorials\\Tutorial-2\\Tutorial-2.bpmn&#34;,&#10;  &#34;workflowInput&#34;: {&#10;    &#34;superFormData&#34;: &#34;{{formData.query}}&#34;&#10;  }&#10;}" />
+          <spiffworkflow:property name="workflowAgentParams" value="{&#10;  &#34;workflowValue&#34;: &#34;Tutorial-2&#34;,&#10;  &#34;workflowInput&#34;: {&#10;    &#34;superFormData&#34;: &#34;{{formData.query}}&#34;&#10;  }&#10;}" />
         </spiffworkflow:properties>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0e67u93</bpmn:incoming>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:spiffworkflow="http://spiffworkflow.org/bpmn/schema/1.0/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:open-bpmn="http://open-bpmn.org/XMLSchema" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:extensionElements>
+    <open-bpmn:auto-align />
+  </bpmn:extensionElements>
+  <bpmn:process id="Test" name="Test" processType="Public" isExecutable="true">
+    <bpmn:documentation id="documentation_0fYdXw" />
+    <bpmn:extensionElements>
+      <spiffworkflow:properties>
+        <spiffworkflow:property name="mcpServerConfig" />
+      </spiffworkflow:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:documentation id="documentation_9hArbg" />
+      <bpmn:outgoing>Flow_start_script1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="EventEvent_1" name="End">
+      <bpmn:documentation id="documentation_ptSF4Q" />
+      <bpmn:incoming>Flow_0jkxj9j</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1ykf8qu" sourceRef="ProcessAnswer" targetRef="Continue" />
+    <bpmn:sequenceFlow id="Flow_0jkxj9j" sourceRef="Gateway_1e478v6" targetRef="EventEvent_1">
+      <bpmn:conditionExpression>not formData.get('More')</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1e478v6" name="Test">
+      <bpmn:incoming>Flow_09xprlf</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jkxj9j</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1066wjz</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_09xprlf" sourceRef="Continue" targetRef="Gateway_1e478v6" />
+    <bpmn:userTask id="Continue" name="Continue">
+      <bpmn:extensionElements>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;title&#34;: &#34;Continue?&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;More&#34;: {&#10;        &#34;title&#34;: &#34;More?&#34;,&#10;        &#34;type&#34;: &#34;boolean&#34;,&#10;        &#34;default&#34;: false,&#10;        &#34;description&#34;: &#34;Check if you want to ask another question&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;More&#34;&#10;    ]&#10;  }&#10;}" />
+        </spiffworkflow:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ykf8qu</bpmn:incoming>
+      <bpmn:outgoing>Flow_09xprlf</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:scriptTask id="ProcessAnswer" name="ProcessAnswer">
+      <bpmn:extensionElements>
+        <spiffworkflow:serviceTaskOperator id="a2a/LLMAgent">
+          <spiffworkflow:parameters>
+            <spiffworkflow:parameter id="model" type="string" />
+            <spiffworkflow:parameter id="instruction" type="string" value="You are a helpful assistant that can answer any questions" />
+            <spiffworkflow:parameter id="question" type="string" />
+            <spiffworkflow:parameter id="input_schema" type="string" />
+            <spiffworkflow:parameter id="output_schema" type="string" />
+            <spiffworkflow:parameter id="output_key" type="string" />
+            <spiffworkflow:parameter id="tools" type="string" />
+          </spiffworkflow:parameters>
+        </spiffworkflow:serviceTaskOperator>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_131ntz1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ykf8qu</bpmn:outgoing>
+      <bpmn:script>answer= str(formData)</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:userTask id="Query" name="Query">
+      <bpmn:extensionElements>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;title&#34;: &#34;Query&#34;,&#10;    &#34;description&#34;: &#34;Enter question to ask&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;query&#34;: {&#10;        &#34;title&#34;: &#34;Query&#34;,&#10;        &#34;type&#34;: &#34;string&#34;,&#10;        &#34;description&#34;: &#34;Enter the query about workflows&#34;,&#10;        &#34;default&#34;: &#34;What workflows are available&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;query&#34;&#10;    ]&#10;  }&#10;}" />
+        </spiffworkflow:properties>
+        <spiffworkflow:postScript>formData.get('more')</spiffworkflow:postScript>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1066wjz</bpmn:incoming>
+      <bpmn:incoming>Flow_start_script1</bpmn:incoming>
+      <bpmn:outgoing>Flow_131ntz1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_131ntz1" sourceRef="Query" targetRef="ProcessAnswer" />
+    <bpmn:sequenceFlow id="Flow_1066wjz" sourceRef="Gateway_1e478v6" targetRef="Query">
+      <bpmn:conditionExpression>formData.get('More')</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_start_script1" sourceRef="StartEvent_1" targetRef="Query">
+      <bpmn:documentation id="documentation_pJ08Xw" />
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:error id="Error_1em3xy6" name="Error_1em3xy6" />
+  <bpmn:error id="Error_1mc3xum" name="Error_1mc3xum" />
+  <bpmn:escalation id="Escalation_07x4alj" name="Escalation_07x4alj" />
+  <bpmn:signal id="Signal_11flrha" name="Signal_11flrha" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Test">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="-678" y="-258" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-671" y="-215" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mb3sqb_di" bpmnElement="EventEvent_1">
+        <dc:Bounds x="-138" y="-258" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-130" y="-215" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1kp2ocx_di" bpmnElement="Query">
+        <dc:Bounds x="-620" y="-280" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_184atih_di" bpmnElement="Gateway_1e478v6" isMarkerVisible="true">
+        <dc:Bounds x="-225" y="-265" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-210" y="-295" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0yppy7a_di" bpmnElement="Continue">
+        <dc:Bounds x="-350" y="-280" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06qmftr_di" bpmnElement="ProcessAnswer">
+        <dc:Bounds x="-480" y="-280" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1ig1k5e_di" bpmnElement="Flow_start_script1">
+        <di:waypoint x="-642" y="-240" />
+        <di:waypoint x="-620" y="-240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_131ntz1_di" bpmnElement="Flow_131ntz1">
+        <di:waypoint x="-520" y="-240" />
+        <di:waypoint x="-480" y="-240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ykf8qu_di" bpmnElement="Flow_1ykf8qu">
+        <di:waypoint x="-380" y="-240" />
+        <di:waypoint x="-350" y="-240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jkxj9j_di" bpmnElement="Flow_0jkxj9j">
+        <di:waypoint x="-175" y="-240" />
+        <di:waypoint x="-138" y="-240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1066wjz_di" bpmnElement="Flow_1066wjz">
+        <di:waypoint x="-200" y="-215" />
+        <di:waypoint x="-200" y="-130" />
+        <di:waypoint x="-570" y="-130" />
+        <di:waypoint x="-570" y="-200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09xprlf_di" bpmnElement="Flow_09xprlf">
+        <di:waypoint x="-250" y="-240" />
+        <di:waypoint x="-225" y="-240" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
