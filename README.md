@@ -6,7 +6,7 @@ The application is targeted for standalone use by developers so that they can be
 - Docker installed on your machine
     - If it's not installed: [Docker's installation guide](https://docs.docker.com/get-started/get-docker/)
 
-## Setup Steps:
+## Setup Steps (Windows):
 - To clone the DDE repo, open a command window and run `git clone https://github.com/dedoctive/DedoctiveDeveloperEdition.git`
 - Navigate into the cloned folder
 - Create a file named `.env` in this folder, filling in your email and API key(s) as illustrated in `.env.template`
