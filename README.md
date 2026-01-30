@@ -1,5 +1,7 @@
 # Dedoctive Developer Edition
 
+[dedoctive.ai](https://dedoctive.ai)
+
 The application is targeted for standalone use by developers so that they can become familiar with designing, running and testing agentic-BPMN workflows
 
 ## Prerequisites
@@ -45,3 +47,7 @@ The application is targeted for standalone use by developers so that they can be
 - If you used startup scripts:
     - Stop the container with: `docker stop dedoctive-developer-edition`
     - Start the container again with: `docker start dedoctive-developer-edition`
+
+## Report Issues
+
+If you should find an issue please log it [here](https://github.com/Dedoctive/DedoctiveDeveloperEdition/issues)
