@@ -4,6 +4,10 @@
 
 The application is targeted for standalone use by developers so that they can become familiar with designing, running and testing agentic-BPMN workflows
 
+<p align="center">
+    <img src="images/image.png" alt="Image of the workflow designer" height="400" />
+</p>
+
 ## Prerequisites
 - Docker installed on your machine
     - If it's not installed: [Docker's installation guide](https://docs.docker.com/get-started/get-docker/)
