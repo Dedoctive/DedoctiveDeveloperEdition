@@ -4,7 +4,8 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-3" name="Tutorial-3" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:documentation id="documentation_yFT0fw">Add an agentic task to the workflow which can access external MCP tools.
+The previous Tutorials have demonstrated the deterministic nature of Dedoctive's Deduction workflows. However, creating a deterministic workflow to multiply two numbers is neither challenging nor 'agentic'. Agentic is a process in which the calling of tools (aka performing tasks if using BPMN terminology) is handed over to a Large Language Model (LLM). The LLM is given instructions, and which 'tools' are available for it to use in fulfilling those instructions. </bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
         <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />

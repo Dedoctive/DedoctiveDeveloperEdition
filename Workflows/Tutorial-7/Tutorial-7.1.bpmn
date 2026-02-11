@@ -4,7 +4,14 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-7.1" name="Tutorial-7.1" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:documentation id="documentation_yFT0fw">BPMN Workflows as MCPTools for LLMAgents (contd)
+In the Tutorial-3 we have seen how an agentic service task (LLMAgent) can invoke a mcpTool. However, we needed to add a userForm at the beginning of the workflow to request from the user what actions they want to take. The subsequent LLMAgent then handled this request. If we want subsequent actions to be taken on the results of the LLMAgent response, then these tasks can be added (deterministically) to the workflow.
+
+Suppose we want the LLM to handle all of this logic non-deterministically? For example, why not let the LLM ask the question and even handle the answer to perform subsequent tasks without defining them deterministically in the workflow?
+
+BPMN already allows one workflow to invoke another workflow, as shown in the last tutorial.
+
+Therefore in this tutorial we show how an existing DedoctiveDeduction LLMAgent can create a non-deterministic workflow process.</bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
         <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
@@ -24,7 +31,7 @@
           <spiffworkflow:parameters />
         </spiffworkflow:serviceTaskOperator>
         <spiffworkflow:properties>
-          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions.\nPrepare a JSONSchema form to ask the user a question and call the userTool tool with this as the form parameter.\nThe user will respond with a question which you should then answer using other tools or the knowledge that you have been trained on.\nThen call userTool again with another JSONSchema form to ask the user a followup question which must include your response to the previous question in the description property.\nIf the user requests to run a workflow, use the workflowTool.\nOnly exit when a user responds with Quit, otherwise call the userTool tool again, with the previous response included, to get a new question from the user.&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;userTool&#34;,&#10;    &#34;workflowTool&#34;&#10;  ]&#10;}" />
+          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions.\nPrepare a JSONSchema form to ask the user a question and call the userTool tool with this as the form parameter.\nThe user will respond with a question which you should then answer using other tools or the knowledge that you have been trained on.\nThen call userTool again with another JSONSchema form to ask the user a followup question which must include your response to the previous question in the description property.\nIf the user requests to run a workflow, use the runWorkflowTool.\nOnly exit when a user responds with Quit, otherwise call the userTool tool again, with the previous response included, to get a new question from the user.&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;builtin_userTool&#34;,&#10;    &#34;builtin_runWorkflowTool&#34;&#10;  ]&#10;}" />
         </spiffworkflow:properties>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1gz6erh</bpmn:incoming>

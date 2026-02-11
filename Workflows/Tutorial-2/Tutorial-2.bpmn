@@ -4,7 +4,9 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-2" name="Tutorial-2" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:documentation id="documentation_yFT0fw">Add a data entry form to the workflow, and use the returned values in a script task
+
+This tutorial builds on the Tutorial-1 showing how a user form can enter some data, a script can access that data, and another script can manipulate that data.</bpmn:documentation>
     <bpmn:startEvent id="StartEvent" name="StartEvent">
       <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
     </bpmn:startEvent>

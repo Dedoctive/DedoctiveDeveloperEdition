@@ -4,14 +4,19 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:collaboration id="Tutorial-5">
+    <bpmn:documentation>BPMN Workflows can be invoked by BPMN workflows
+So far we have created very simple agentic and workflow processes. In more realistic use-cases these processes will be more complex involving:
+Conditional branching and merging of the process paths
+Iterations and loops
+Modularization into subprocesses and workflow
+It is the latter modularization topic we want to introduce in this tutorial. This is in part as a segue to the next tutorial that will introduce agents invoking workflows, another aspect of modularization.</bpmn:documentation>
     <bpmn:participant id="subActivity" name="subActivity" processRef="subWorkflow" />
     <bpmn:participant id="Main" name="Main" processRef="__main__" />
   </bpmn:collaboration>
   <bpmn:process id="subWorkflow" name="subWorkflow" processType="Public" isExecutable="true">
     <bpmn:documentation id="documentation_yFT0fw" />
     <bpmn:extensionElements>
-      <spiffworkflow:properties>
-      </spiffworkflow:properties>
+      <spiffworkflow:properties />
     </bpmn:extensionElements>
     <bpmn:endEvent id="EndSubWorkflow" name="EndSubWorkflow">
       <bpmn:incoming>Flow_0wvm3st</bpmn:incoming>

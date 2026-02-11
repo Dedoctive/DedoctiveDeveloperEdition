@@ -4,7 +4,10 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-8" name="Tutorial-8" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:documentation id="documentation_yFT0fw">Add dynamic elements to userForms
+Having plunged into the depths of Dedoctive-Deductions and allowed an LLM to create a form, we might have concluded that a more deterministic approach would often be better, especially when creating a form.
+
+The advantage of the LLM-generated UserForms is that they will adapt to prior circumstances within the session.Therefore this tutorial describes how UserForms can be dynamically adjusted to reflect the state of the workflow session.</bpmn:documentation>
     <bpmn:startEvent id="Event_1m60e8f">
       <bpmn:outgoing>Flow_1os6owq</bpmn:outgoing>
     </bpmn:startEvent>

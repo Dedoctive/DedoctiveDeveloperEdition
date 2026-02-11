@@ -4,7 +4,9 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-4.1" name="Tutorial-4.1" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:documentation id="documentation_yFT0fw">Mixing BPMN-MCPTools (contd)
+In the previous tutorials we have used BPMN script tasks (highly deterministic), and LLMAgent tasks (somewhat non-deterministic). In the latter case we allowed the LLM to invoke a tool if it was seen to be relevant to the question being asked. In many work-processes we will know with certainty what tool is required. Therefore this tutorial shows how a BPMN workflow can invoke a MCPTool as a task directly.
+</bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
         <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
@@ -23,7 +25,7 @@
         <spiffworkflow:instructionsForEndUser>You are a helpful assistant that can answer any questions</spiffworkflow:instructionsForEndUser>
         <spiffworkflow:serviceTaskOperator id="mcp/MCPTool" resultVariable="mcpToolResult" />
         <spiffworkflow:properties>
-          <spiffworkflow:property name="mcpToolConfiguration" value="{&#10;  &#34;toolName&#34;: &#34;deepwiki_read_wiki_contents&#34;,&#10;  &#34;toolArgs&#34;: {&#10;    &#34;repoName&#34;: &#34;{{formData.Repository}}&#34;&#10;  }&#10;}" />
+          <spiffworkflow:property name="mcpToolConfiguration" value="{&#10;  &#34;toolName&#34;: &#34;deepwiki_read_wiki_contents&#34;,&#10;  &#34;toolArgs&#34;: {&#10;    &#34;repoName&#34;: &#34;{{formData.get(&#39;repository&#39;)}}&#34;&#10;  }&#10;}" />
         </spiffworkflow:properties>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0je757y</bpmn:incoming>
@@ -33,13 +35,13 @@
     <bpmn:scriptTask id="CounterScript" name="CounterScript">
       <bpmn:incoming>Flow_1wt4v9q</bpmn:incoming>
       <bpmn:outgoing>Flow_1tnes4t</bpmn:outgoing>
-      <bpmn:script>response = "There are " + str(len(mcpToolResult)) +" document topics in the " + formData.get('Repository') +" repository"</bpmn:script>
+      <bpmn:script>response = "The documentation is " + str(len(mcpToolResult)) + " characters long for the " + formData.get('repository') + " repository"</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_0je757y" sourceRef="UserForm" targetRef="MCPTool" />
     <bpmn:userTask id="UserForm" name="UserForm">
       <bpmn:extensionElements>
         <spiffworkflow:properties>
-          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;title&#34;: &#34;Repository Selection&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;Repository&#34;: {&#10;        &#34;title&#34;: &#34;Repository&#34;,&#10;        &#34;type&#34;: &#34;string&#34;,&#10;        &#34;description&#34;: &#34;The name of the repository&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;Repository&#34;&#10;    ]&#10;  },&#10;  &#34;formData&#34;: {}&#10;}" />
+          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;title&#34;: &#34;Repository Selection&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;repository&#34;: {&#10;        &#34;title&#34;: &#34;Repository&#34;,&#10;        &#34;type&#34;: &#34;string&#34;,&#10;        &#34;description&#34;: &#34;The name of the repository&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;repository&#34;&#10;    ]&#10;  }&#10;}" />
         </spiffworkflow:properties>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1gz6erh</bpmn:incoming>

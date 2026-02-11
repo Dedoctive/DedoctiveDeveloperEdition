@@ -4,7 +4,8 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-1" name="Tutorial-1" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:documentation id="documentation_yFT0fw">Run Designer to create and run a workflow that executes a simple script
+This first tutorial is designed to illustrate creating a BPMN, adding a simple script task, and then debugging to view the results. </bpmn:documentation>
     <bpmn:startEvent id="StartEvent" name="StartEvent">
       <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
     </bpmn:startEvent>

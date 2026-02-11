@@ -21,6 +21,10 @@ Dedoctive is a hybrid workflow environment that combines the predictability of B
     <img src="images/image.png" alt="Image of the workflow designer" height="400" />
 </p>
 
+### Links
+- [Setup and tutorial videos](https://www.youtube.com/playlist?list=PLIqRgfm8ie6vtgXVbMGYLA4xRyeowNTYu)
+- [Dedoctive website](https://dedoctive.ai/)
+
 ## Prerequisites
 - Docker installed on your machine
     - If it's not installed: [Docker's installation guide](https://docs.docker.com/get-started/get-docker/)

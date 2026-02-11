@@ -4,7 +4,16 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-9" name="Tutorial-9" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:documentation id="documentation_yFT0fw"> Dynamic Debugging of workflows
+Workflows are a very high-level programming language, even though they are more descriptive than procedural like regular languages. When developing a new workflow mistakes will be made, yes really! 
+
+Dedoctive-Designer does make it very easy to develop the workflows interactively, and quickly see the results in the Workflow output. Any errors in the workflow will appear within the Workflow Output panel in the Message associated with the task that caused the error. Additionally, the workflow diagram will highlight the task at which the execution of the workflow was halted.
+
+Workflows can become much more intricate with subWorkflows, iterations, conditional paths and so on. So the visual debugging that Dedoctive-Designer offers becomes very important.
+
+However the ability for Dedoctive-Deduction workflows to include agentic tasks, introduces another problem that many uses of agentic processes will have encountered: speed or lack of it. Response times from an LLM will take many seconds but they can even take many minutes when submitting a large context window or expecting a lengthy response. Thus, when a Deduction workflow includes such tasks, it makes debugging time consuming when one has to wait for a task, that's early in the workflow, to complete, before progressing (and debugging) subsequent tasks.
+
+Dedoctive-Deduction and Dedoctive-Designer supports a unique concept: DynamicDebugging. With Dynamic-Debugging, a workflow can be 'rerun'. When a workflow is 'rerun' it will use the prior run's results for any task that is unchanged. It will only execute the tasks that have changed since the last run and insert the new results. It will also execute any task subsequent to a changed task.</bpmn:documentation>
     <bpmn:startEvent id="StartEvent" name="StartEvent">
       <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
     </bpmn:startEvent>

@@ -4,7 +4,8 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-4" name="Tutorial-4" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw" />
+    <bpmn:documentation id="documentation_yFT0fw">Mixing BPMN-MCPTools
+In the previous tutorials we have used BPMN script tasks (highly deterministic), and LLMAgent tasks (somewhat non-deterministic). In the latter case we allowed the LLM to invoke a tool if it was seen to be relevant to the question being asked. In many work-processes we will know with certainty what tool is required. Therefore this tutorial shows how a BPMN workflow can invoke a MCPTool as a task directly.</bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
         <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
@@ -33,7 +34,7 @@
     <bpmn:scriptTask id="CounterScript" name="CounterScript">
       <bpmn:incoming>Flow_1wt4v9q</bpmn:incoming>
       <bpmn:outgoing>Flow_1tnes4t</bpmn:outgoing>
-      <bpmn:script>response = "There are " + str(len(mcpToolResult)) +" document topics in scipy/scipy"</bpmn:script>
+      <bpmn:script>response = "The documentation is " + str(len(mcpToolResult)) + " characters long for scipy/scipy"</bpmn:script>
     </bpmn:scriptTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">

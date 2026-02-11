@@ -4,6 +4,14 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:collaboration id="Tutorial-6">
+    <bpmn:documentation> BPMN Workflows Agents can be invoked as a workflow Task
+In the previous tutorials we have seen how either an agentic service task (LLMAgent) or a tool service task (MCPTool) can invoke a mcpTool. The latter does this deterministically whilst the former will execute the tool determined by the request. 
+
+There will be many use-cases in which there is no mcpTool that performs the task required to satisfy the business requirements of the workflow. However, this 'task' could be created as a BPMN workflow as described in the prior tutorials. 
+
+BPMN already allows one workflow to invoke another workflow, as shown in the last tutorial.
+
+Therefore in this tutorial we show how an existing DedoctiveDeduction workflow can be used as a tool within an agentic LLMAgent</bpmn:documentation>
     <bpmn:participant id="Main" name="Main" processRef="__main__" />
   </bpmn:collaboration>
   <bpmn:process id="__main__" name="__main__">
