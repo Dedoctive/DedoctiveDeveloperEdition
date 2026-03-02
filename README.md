@@ -71,6 +71,7 @@ Dedoctive is a hybrid workflow environment that combines the predictability of B
 - If you used startup scripts:
     - Stop the container with: `docker stop dedoctive-developer-edition`
     - Start the container again with: `docker start dedoctive-developer-edition`
+- Note that long text in a property field may prevent the diagram showing properly. If this happens, shorten the text and the diagram will re-appear.
 
 ## Report Issues
 
