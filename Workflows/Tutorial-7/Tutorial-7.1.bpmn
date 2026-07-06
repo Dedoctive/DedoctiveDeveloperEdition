@@ -4,65 +4,98 @@
     <open-bpmn:auto-align>true</open-bpmn:auto-align>
   </bpmn:extensionElements>
   <bpmn:process id="Tutorial-7.1" name="Tutorial-7.1" processType="Public" isExecutable="true">
-    <bpmn:documentation id="documentation_yFT0fw">BPMN Workflows as MCPTools for LLMAgents (contd)
-In the Tutorial-3 we have seen how an agentic service task (LLMAgent) can invoke a mcpTool. However, we needed to add a userForm at the beginning of the workflow to request from the user what actions they want to take. The subsequent LLMAgent then handled this request. If we want subsequent actions to be taken on the results of the LLMAgent response, then these tasks can be added (deterministically) to the workflow.
-
-Suppose we want the LLM to handle all of this logic non-deterministically? For example, why not let the LLM ask the question and even handle the answer to perform subsequent tasks without defining them deterministically in the workflow?
-
-BPMN already allows one workflow to invoke another workflow, as shown in the last tutorial.
-
-Therefore in this tutorial we show how an existing DedoctiveDeduction LLMAgent can create a non-deterministic workflow process.</bpmn:documentation>
+    <bpmn:documentation id="documentation_yFT0fw">Showcases how an LLM agent can be used to take the user's description of a workflow and reason over the list of available workflows and their descriptions to output the name of the best-fitting workflow which is passed into a WorkflowAgent to be run</bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
-        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
+        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: {&#10;        &#34;type&#34;: &#34;http&#34;,&#10;        &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;      },&#10;      &#34;authConfig&#34;: {&#10;        &#34;authType&#34;: &#34;none&#34;,&#10;        &#34;authScheme&#34;: null,&#10;        &#34;authCredential&#34;: null&#10;      }&#10;    }&#10;  }&#10;}" />
       </spiffworkflow:properties>
     </bpmn:extensionElements>
-    <bpmn:startEvent id="StartEvent" name="StartEvent">
-      <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
+    <bpmn:startEvent id="StartEvent" name="Start Event">
+      <bpmn:outgoing>Flow_0btwj8h</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:endEvent id="EndEvent" name="EndEvent">
-      <bpmn:incoming>Flow_0zb3g66</bpmn:incoming>
+    <bpmn:endEvent id="EndEvent" name="End Event">
+      <bpmn:incoming>Flow_0hfcdks</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1gz6erh" sourceRef="StartEvent" targetRef="LLMAgent" />
-    <bpmn:sequenceFlow id="Flow_0zb3g66" sourceRef="LLMAgent" targetRef="EndEvent" />
-    <bpmn:serviceTask id="LLMAgent" name="LLMAgent">
+    <bpmn:sequenceFlow id="Flow_0btwj8h" sourceRef="StartEvent" targetRef="UserInput" />
+    <bpmn:sequenceFlow id="Flow_1ny4i51" sourceRef="UserInput" targetRef="LLMAgent" />
+    <bpmn:sequenceFlow id="Flow_1mhqc5h" sourceRef="LLMAgent" targetRef="RunWorkflow" />
+    <bpmn:userTask id="UserInput" name="User Input">
+      <bpmn:extensionElements>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;query&#34;: {&#10;        &#34;title&#34;: &#34;User Query&#34;,&#10;        &#34;type&#34;: &#34;string&#34;,&#10;        &#34;default&#34;: &#34;Run the simple workflow which asks for a user input form&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;query&#34;&#10;    ]&#10;  }&#10;}" />
+        </spiffworkflow:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0btwj8h</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ny4i51</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="LLMAgent" name="LLM Agent">
       <bpmn:extensionElements>
         <spiffworkflow:serviceTaskOperator id="adk/LLMAgent" resultVariable="llmResponse">
           <spiffworkflow:parameters />
         </spiffworkflow:serviceTaskOperator>
         <spiffworkflow:properties>
-          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions.\nPrepare a JSONSchema form to ask the user a question and call the userTool tool with this as the form parameter.\nThe user will respond with a question which you should then answer using other tools or the knowledge that you have been trained on.\nThen call userTool again with another JSONSchema form to ask the user a followup question which must include your response to the previous question in the description property.\nIf the user requests to run a workflow, use the runWorkflowTool.\nOnly exit when a user responds with Quit, otherwise call the userTool tool again, with the previous response included, to get a new question from the user.&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;builtin_userTool&#34;,&#10;    &#34;builtin_runWorkflowTool&#34;&#10;  ]&#10;}" />
+          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;A user will request to run a workflow, use the getWorkflows tool to get the available workflows and then output just the name of the workflow the user described. Don&#39;t prepend it with &#39;The name of the workflow is...&#39; or anything like that, just output the name of the workflow. e.g. &#39;Tutorial-2&#39;&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;builtin_getWorkflows&#34;&#10;  ]&#10;}" />
+        </spiffworkflow:properties>
+        <spiffworkflow:postScript>workflowName = llmResponse[-1]</spiffworkflow:postScript>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ny4i51</bpmn:incoming>
+      <bpmn:outgoing>Flow_1mhqc5h</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0hfcdks" sourceRef="RunWorkflow" targetRef="EndEvent" />
+    <bpmn:serviceTask id="RunWorkflow" name="Run Workflow">
+      <bpmn:extensionElements>
+        <spiffworkflow:serviceTaskOperator id="adk/WorkflowAgent" resultVariable="workflowResponse">
+          <spiffworkflow:parameters />
+        </spiffworkflow:serviceTaskOperator>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="workflowAgentParams" value="{&#10;  &#34;workflowValue&#34;: &#34;{{workflowName}}&#34;,&#10;  &#34;workflowInput&#34;: {}&#10;}" />
         </spiffworkflow:properties>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1gz6erh</bpmn:incoming>
-      <bpmn:outgoing>Flow_0zb3g66</bpmn:outgoing>
+      <bpmn:incoming>Flow_1mhqc5h</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hfcdks</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Tutorial-7.1">
-      <bpmndi:BPMNShape id="Event_0bboaaa_di" bpmnElement="StartEvent">
-        <dc:Bounds x="422" y="202" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_05hld6p_di" bpmnElement="StartEvent">
+        <dc:Bounds x="252" y="242" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="415" y="245" width="53" height="14" />
+          <dc:Bounds x="242" y="285" width="57" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndEvent">
-        <dc:Bounds x="732" y="202" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_1ojtk4k_di" bpmnElement="EndEvent">
+        <dc:Bounds x="882" y="242" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="727" y="245" width="49" height="14" />
+          <dc:Bounds x="874" y="285" width="53" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0cakts7_di" bpmnElement="LLMAgent">
-        <dc:Bounds x="550" y="180" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_0zyptm4_di" bpmnElement="UserInput">
+        <dc:Bounds x="380" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1gz6erh_di" bpmnElement="Flow_1gz6erh">
-        <di:waypoint x="458" y="220" />
-        <di:waypoint x="550" y="220" />
+      <bpmndi:BPMNShape id="Activity_1q2ek2v_di" bpmnElement="LLMAgent">
+        <dc:Bounds x="560" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j7qe7u_di" bpmnElement="RunWorkflow">
+        <dc:Bounds x="730" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0btwj8h_di" bpmnElement="Flow_0btwj8h">
+        <di:waypoint x="288" y="260" />
+        <di:waypoint x="380" y="260" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0zb3g66_di" bpmnElement="Flow_0zb3g66">
-        <di:waypoint x="650" y="220" />
-        <di:waypoint x="732" y="220" />
+      <bpmndi:BPMNEdge id="Flow_1ny4i51_di" bpmnElement="Flow_1ny4i51">
+        <di:waypoint x="480" y="260" />
+        <di:waypoint x="560" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mhqc5h_di" bpmnElement="Flow_1mhqc5h">
+        <di:waypoint x="660" y="260" />
+        <di:waypoint x="730" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hfcdks_di" bpmnElement="Flow_0hfcdks">
+        <di:waypoint x="830" y="260" />
+        <di:waypoint x="882" y="260" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

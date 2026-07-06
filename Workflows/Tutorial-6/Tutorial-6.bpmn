@@ -12,9 +12,9 @@ There will be many use-cases in which there is no mcpTool that performs the task
 BPMN already allows one workflow to invoke another workflow, as shown in the last tutorial.
 
 Therefore in this tutorial we show how an existing DedoctiveDeduction workflow can be used as a tool within an agentic LLMAgent</bpmn:documentation>
-    <bpmn:participant id="Main" name="Main" processRef="__main__" />
+    <bpmn:participant id="Main" name="Main" processRef="tutorial-6" />
   </bpmn:collaboration>
-  <bpmn:process id="__main__" name="__main__">
+  <bpmn:process id="tutorial-6" name="tutorial-6">
     <bpmn:startEvent id="StartMain" name="StartMain">
       <bpmn:outgoing>Flow_15k6erz</bpmn:outgoing>
     </bpmn:startEvent>
@@ -23,7 +23,7 @@ Therefore in this tutorial we show how an existing DedoctiveDeduction workflow c
     <bpmn:userTask id="UserForm" name="UserForm">
       <bpmn:extensionElements>
         <spiffworkflow:properties>
-          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;query&#34;: {&#10;        &#34;title&#34;: &#34;Query&#34;,&#10;        &#34;type&#34;: &#34;string&#34;,&#10;        &#34;description&#34;: &#34;Enter a query that you want the LLM to answer using its tools&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;query&#34;&#10;    ]&#10;  }&#10;}" />
+          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: {&#10;    &#34;type&#34;: &#34;object&#34;,&#10;    &#34;properties&#34;: {&#10;      &#34;query&#34;: {&#10;        &#34;title&#34;: &#34;Query&#34;,&#10;        &#34;type&#34;: &#34;string&#34;,&#10;        &#34;description&#34;: &#34;Enter a query&#34;,&#10;        &#34;default&#34;: &#34;Test query 123&#34;&#10;      }&#10;    },&#10;    &#34;dependencies&#34;: {},&#10;    &#34;required&#34;: []&#10;  },&#10;  &#34;uiSchema&#34;: {&#10;    &#34;ui:order&#34;: [&#10;      &#34;query&#34;&#10;    ]&#10;  }&#10;}" />
         </spiffworkflow:properties>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_15k6erz</bpmn:incoming>

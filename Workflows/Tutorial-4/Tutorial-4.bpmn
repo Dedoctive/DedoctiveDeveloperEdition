@@ -8,7 +8,7 @@
 In the previous tutorials we have used BPMN script tasks (highly deterministic), and LLMAgent tasks (somewhat non-deterministic). In the latter case we allowed the LLM to invoke a tool if it was seen to be relevant to the question being asked. In many work-processes we will know with certainty what tool is required. Therefore this tutorial shows how a BPMN workflow can invoke a MCPTool as a task directly.</bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
-        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
+        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: {&#10;        &#34;type&#34;: &#34;http&#34;,&#10;        &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;      },&#10;      &#34;authConfig&#34;: {&#10;        &#34;authType&#34;: &#34;none&#34;,&#10;        &#34;authCredential&#34;: null&#10;      }&#10;    }&#10;  }&#10;}" />
       </spiffworkflow:properties>
     </bpmn:extensionElements>
     <bpmn:startEvent id="StartEvent" name="StartEvent">

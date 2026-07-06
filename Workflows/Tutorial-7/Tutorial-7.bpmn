@@ -14,55 +14,140 @@ BPMN already allows one workflow to invoke another workflow, as shown in the las
 Therefore in this tutorial we show how an existing DedoctiveDeduction LLMAgent can create a non-deterministic workflow process.</bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
-        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
+        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: {&#10;        &#34;type&#34;: &#34;http&#34;,&#10;        &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;      },&#10;      &#34;authConfig&#34;: {&#10;        &#34;authType&#34;: &#34;none&#34;,&#10;        &#34;authCredential&#34;: null&#10;      }&#10;    }&#10;  }&#10;}" />
       </spiffworkflow:properties>
     </bpmn:extensionElements>
     <bpmn:startEvent id="StartEvent" name="StartEvent">
-      <bpmn:outgoing>Flow_1gz6erh</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1xnhtkg</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="EndEvent" name="EndEvent">
-      <bpmn:incoming>Flow_0zb3g66</bpmn:incoming>
+      <bpmn:incoming>Flow_190tt3c</bpmn:incoming>
+      <bpmn:incoming>Flow_05gezir</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1gz6erh" sourceRef="StartEvent" targetRef="LLMAgent" />
-    <bpmn:sequenceFlow id="Flow_0zb3g66" sourceRef="LLMAgent" targetRef="EndEvent" />
-    <bpmn:serviceTask id="LLMAgent" name="LLMAgent">
+    <bpmn:serviceTask id="LLMAgent" name="LLM Agent">
       <bpmn:extensionElements>
         <spiffworkflow:serviceTaskOperator id="adk/LLMAgent" resultVariable="llmResponse">
           <spiffworkflow:parameters />
         </spiffworkflow:serviceTaskOperator>
         <spiffworkflow:properties>
-          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions.\nPrepare a JSONSchema form to ask the user a question and call the userTool tool with this as the form parameter.\nThe user will respond with a question which you should then answer using other tools or the knowledge that you have been trained on.\nThen call userTool again with another JSONSchema form to ask the user a followup question which must include your response to the previous question in the description property.\nOnly exit when a user responds with Quit, otherwise call the userTool tool again, with the previous response included, to get a new question from the user.&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;builtin_userTool&#34;,&#10;    &#34;deepwiki_read_wiki_structure&#34;,&#10;    &#34;deepwiki_read_wiki_contents&#34;,&#10;    &#34;deepwiki_ask_question&#34;&#10;  ]&#10;}" />
+          <spiffworkflow:property name="llmAgentParams" value="{&#10;  &#34;model&#34;: &#34;openai/gpt-4.1-mini&#34;,&#10;  &#34;instruction&#34;: &#34;You are a helpful assistant that can answer any questions.\nIf no user input is provided don&#39;t call any tools, just generate a form using the JSON schema form standard which the user can then enter data into.\nIf a user form is provided, answer the user&#39;s questions, using the provided tools if necessary. Always embed your answer within another form in the &#39;description&#39; section at the top level which will be presented to the user. \n\nWhenever you generate a form, always provide a checkbox with the value &#39;quit&#39; that the user can select instead of asking a question.&#34;,&#10;  &#34;tools&#34;: [&#10;    &#34;deepwiki_read_wiki_structure&#34;,&#10;    &#34;deepwiki_read_wiki_contents&#34;,&#10;    &#34;deepwiki_ask_question&#34;&#10;  ]&#10;}" />
         </spiffworkflow:properties>
+        <spiffworkflow:postScript>try:
+  jsonForm = json.loads(llmResponse[-1])
+except:
+  jsonForm = None</spiffworkflow:postScript>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1gz6erh</bpmn:incoming>
-      <bpmn:outgoing>Flow_0zb3g66</bpmn:outgoing>
+      <bpmn:incoming>Flow_1xnhtkg</bpmn:incoming>
+      <bpmn:incoming>Flow_0k5vgbb</bpmn:incoming>
+      <bpmn:outgoing>Flow_0us7zky</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1xnhtkg" sourceRef="StartEvent" targetRef="LLMAgent" />
+    <bpmn:sequenceFlow id="Flow_0us7zky" sourceRef="LLMAgent" targetRef="Gateway_07rrjz0" />
+    <bpmn:userTask id="UserInput" name="User Input">
+      <bpmn:extensionElements>
+        <spiffworkflow:properties>
+          <spiffworkflow:property name="formJsonSchema" value="{&#10;  &#34;schema&#34;: &#34;{{jsonForm}}&#34;,&#10;  &#34;uiSchema&#34;: {},&#10;  &#34;formData&#34;: {}&#10;}" />
+        </spiffworkflow:properties>
+        <spiffworkflow:postScript>quit = formData.get('quit')</spiffworkflow:postScript>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1f4q1re</bpmn:incoming>
+      <bpmn:outgoing>Flow_06fklxf</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_07rrjz0">
+      <bpmn:incoming>Flow_0us7zky</bpmn:incoming>
+      <bpmn:outgoing>Flow_1f4q1re</bpmn:outgoing>
+      <bpmn:outgoing>Flow_190tt3c</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1f4q1re" name="LLM defined form" sourceRef="Gateway_07rrjz0" targetRef="UserInput">
+      <bpmn:conditionExpression>jsonForm != None</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_190tt3c" name="LLM failed to define form" sourceRef="Gateway_07rrjz0" targetRef="EndEvent">
+      <bpmn:conditionExpression>jsonForm == None</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_06fklxf" sourceRef="UserInput" targetRef="Gateway_1d6wq5g" />
+    <bpmn:exclusiveGateway id="Gateway_1d6wq5g">
+      <bpmn:incoming>Flow_06fklxf</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k5vgbb</bpmn:outgoing>
+      <bpmn:outgoing>Flow_05gezir</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0k5vgbb" name="User submitted a query" sourceRef="Gateway_1d6wq5g" targetRef="LLMAgent">
+      <bpmn:conditionExpression>not quit</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_05gezir" name="User selected quit" sourceRef="Gateway_1d6wq5g" targetRef="EndEvent">
+      <bpmn:conditionExpression>quit</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Tutorial-7">
       <bpmndi:BPMNShape id="Event_0bboaaa_di" bpmnElement="StartEvent">
-        <dc:Bounds x="422" y="202" width="36" height="36" />
+        <dc:Bounds x="242" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="415" y="245" width="53" height="14" />
+          <dc:Bounds x="235" y="245" width="53" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndEvent">
-        <dc:Bounds x="732" y="202" width="36" height="36" />
+        <dc:Bounds x="1042" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="727" y="245" width="49" height="14" />
+          <dc:Bounds x="1035.5" y="178" width="49" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0cakts7_di" bpmnElement="LLMAgent">
-        <dc:Bounds x="550" y="180" width="100" height="80" />
+        <dc:Bounds x="370" y="180" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1gz6erh_di" bpmnElement="Flow_1gz6erh">
-        <di:waypoint x="458" y="220" />
-        <di:waypoint x="550" y="220" />
+      <bpmndi:BPMNShape id="Activity_10i1gxa_di" bpmnElement="UserInput">
+        <dc:Bounds x="720" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_07rrjz0_di" bpmnElement="Gateway_07rrjz0" isMarkerVisible="true">
+        <dc:Bounds x="535" y="195" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1d6wq5g_di" bpmnElement="Gateway_1d6wq5g" isMarkerVisible="true">
+        <dc:Bounds x="865" y="195" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1xnhtkg_di" bpmnElement="Flow_1xnhtkg">
+        <di:waypoint x="278" y="220" />
+        <di:waypoint x="370" y="220" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0zb3g66_di" bpmnElement="Flow_0zb3g66">
-        <di:waypoint x="650" y="220" />
-        <di:waypoint x="732" y="220" />
+      <bpmndi:BPMNEdge id="Flow_0us7zky_di" bpmnElement="Flow_0us7zky">
+        <di:waypoint x="470" y="220" />
+        <di:waypoint x="535" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1f4q1re_di" bpmnElement="Flow_1f4q1re">
+        <di:waypoint x="585" y="220" />
+        <di:waypoint x="720" y="220" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="609" y="202" width="88" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_190tt3c_di" bpmnElement="Flow_190tt3c">
+        <di:waypoint x="560" y="245" />
+        <di:waypoint x="560" y="300" />
+        <di:waypoint x="1060" y="300" />
+        <di:waypoint x="1060" y="238" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="618" y="306" width="69" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06fklxf_di" bpmnElement="Flow_06fklxf">
+        <di:waypoint x="820" y="220" />
+        <di:waypoint x="865" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k5vgbb_di" bpmnElement="Flow_0k5vgbb">
+        <di:waypoint x="890" y="195" />
+        <di:waypoint x="890" y="130" />
+        <di:waypoint x="420" y="130" />
+        <di:waypoint x="420" y="180" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="807" y="96" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05gezir_di" bpmnElement="Flow_05gezir">
+        <di:waypoint x="915" y="220" />
+        <di:waypoint x="1042" y="220" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="913" y="186" width="73" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

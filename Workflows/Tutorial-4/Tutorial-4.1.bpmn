@@ -9,7 +9,7 @@ In the previous tutorials we have used BPMN script tasks (highly deterministic),
 </bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
-        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
+        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: {&#10;        &#34;type&#34;: &#34;http&#34;,&#10;        &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;      },&#10;      &#34;authConfig&#34;: {&#10;        &#34;authType&#34;: &#34;none&#34;,&#10;        &#34;authCredential&#34;: null&#10;      }&#10;    }&#10;  }&#10;}" />
       </spiffworkflow:properties>
     </bpmn:extensionElements>
     <bpmn:startEvent id="StartEvent" name="StartEvent">
@@ -56,7 +56,7 @@ In the previous tutorials we have used BPMN script tasks (highly deterministic),
           <dc:Bounds x="167" y="245" width="53" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndEvent" bioc:stroke="#000000" bioc:fill="#009238" color:background-color="#009238" color:border-color="#000000">
+      <bpmndi:BPMNShape id="Event_0g9dy8f_di" bpmnElement="EndEvent">
         <dc:Bounds x="772" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="767" y="245" width="49" height="14" />

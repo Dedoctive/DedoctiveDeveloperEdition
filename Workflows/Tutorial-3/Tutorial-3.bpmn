@@ -8,7 +8,7 @@
 The previous Tutorials have demonstrated the deterministic nature of Dedoctive's Deduction workflows. However, creating a deterministic workflow to multiply two numbers is neither challenging nor 'agentic'. Agentic is a process in which the calling of tools (aka performing tasks if using BPMN terminology) is handed over to a Large Language Model (LLM). The LLM is given instructions, and which 'tools' are available for it to use in fulfilling those instructions. </bpmn:documentation>
     <bpmn:extensionElements>
       <spiffworkflow:properties>
-        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: &#34;http&#34;,&#10;      &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;    }&#10;  }&#10;}" />
+        <spiffworkflow:property name="mcpServerConfig" value="{&#10;  &#34;mcpServers&#34;: {&#10;    &#34;deepwiki&#34;: {&#10;      &#34;transport&#34;: {&#10;        &#34;type&#34;: &#34;http&#34;,&#10;        &#34;url&#34;: &#34;https://mcp.deepwiki.com/mcp&#34;&#10;      },&#10;      &#34;authConfig&#34;: {&#10;        &#34;authType&#34;: &#34;none&#34;,&#10;        &#34;authCredential&#34;: null&#10;      }&#10;    }&#10;  }&#10;}" />
       </spiffworkflow:properties>
     </bpmn:extensionElements>
     <bpmn:startEvent id="StartEvent" name="StartEvent">
